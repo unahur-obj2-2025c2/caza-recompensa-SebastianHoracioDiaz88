@@ -1,17 +1,22 @@
 package ar.edu.unahur.obj2.Cazadores;
 
-import ar.edu.unahur.obj2.Profugo.Profugo;
+import ar.edu.unahur.obj2.Profugo.Iprofugo;
+
 
 public class CazadorUrbano extends Cazador{
 
+    public CazadorUrbano(Integer experiencia) {
+        super(experiencia);
+    }
+  
     @Override
-    protected Boolean doCapturarEspecifico(Profugo profugo) {
-        return ! profugo.esNervioso();
+    protected void doIntimidaciónEspecifica(Iprofugo p) {
+          p.dejarDeEstarNervioso();
     }
 
     @Override
-    protected void doIntimidaciónEspecifica(Profugo profugo) {
-        profugo.dejarDeEstarNervioso();
+    protected Boolean doCapturarEspecifico(Iprofugo p) {
+        return ! p.esNervioso();
     }
 
 }

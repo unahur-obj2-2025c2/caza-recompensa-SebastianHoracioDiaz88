@@ -72,9 +72,9 @@ public abstract class Cazador {
         experiencia += minimaHabilidad + 2 * intimidados.size();
     }
        
-    protected abstract void doIntimidaciónEspecifica(Iprofugo p);
+    public abstract void doIntimidaciónEspecifica(Iprofugo p);
 
-    protected abstract Boolean doCapturarEspecifico(Iprofugo p);
+    public abstract Boolean doCapturarEspecifico(Iprofugo p);
 
 
     
