@@ -1,48 +1,81 @@
 package ar.edu.unahur.obj2.Cazadores;
 
-import ar.edu.unahur.obj2.Profugo.Profugo;
+import java.util.ArrayList;
+import java.util.List;
+
+
+import ar.edu.unahur.obj2.Zona;
+import ar.edu.unahur.obj2.Profugo.Iprofugo;
 
 public abstract class Cazador {
    
-    private Integer experiencia;
+    protected Integer experiencia;
+    protected List<Iprofugo> profugo;
 
-
-    public void cazar(Profugo profugo){
-        if (puedeCapturar(profugo)){
-
-         //   experiencia += (Mínimo valor de habilidad entre todos los intimidados ) + ( 2 * prófugos capturados)
-
-        }
-        else {
-            profugo.disminuirInocencia();
-            intimidacionEspecifica(profugo);
-        }
+    public Cazador(Integer experiencia) {
+        this.experiencia = experiencia;
+        this.profugo = new ArrayList<>();
     }
 
-    public Boolean puedeCapturarGeneral(Profugo profugo) {
+    public void cazarEn(Zona zona){
+        List<Iprofugo> intimidados = new ArrayList<>();
+        zona.getProfugos().stream().forEach(p -> {
+            if(puedeCapturar(p)){
+                zona.agregarProfugo(p);
+                zona.quitarProfugo(p);
+            } else {
+                intimidar(p);
+                intimidados.add(p);
+            }
+        });
 
-        return experiencia > profugo.getInocencia();
+        sumarExperiencia(intimidados);
+        
+    }
+
+    public Boolean puedeCapturarGeneral(Iprofugo p) {
+
+        return experiencia > p.getInocencia();
 
     }
 
-    public Boolean puedeCapturar(Profugo profugo) {
+    public Boolean puedeCapturar(Iprofugo p) {
 
-        return puedeCapturarGeneral(profugo) && puedeCapturarEspecifico (profugo) ;
+        return puedeCapturarGeneral(p) && puedeCapturarEspecifico (p) ;
 
     }
 
-    public Boolean puedeCapturarEspecifico (Profugo profugo) {
+    public Boolean puedeCapturarEspecifico (Iprofugo p) {
 
-        return doCapturarEspecifico(profugo);
+        return doCapturarEspecifico(p);
 
     }
     
-    public void intimidacionEspecifica (Profugo profugo) {
-        doIntimidaciónEspecifica (profugo);
+    public void intimidacionEspecifica (Iprofugo p) {
+        doIntimidaciónEspecifica (p);
     }
 
-    protected abstract void doIntimidaciónEspecifica(Profugo profugo);
+    
+    public void intimidar(Iprofugo p) {
+        p.disminuirInocencia();
+        intimidacionEspecifica(p);
+    }
 
-    protected abstract Boolean doCapturarEspecifico(Profugo profugo);
+    private void sumarExperiencia(List<Iprofugo> intimidados) {
+        Integer minimaHabilidad = Integer.valueOf(
+        intimidados.stream()
+                .mapToInt(Iprofugo::getHabilidad)
+                .min()
+                .orElse(0)
+        );               // si la lista está vacía, devuelve 0
+
+        experiencia += minimaHabilidad + 2 * intimidados.size();
+    }
+       
+    protected abstract void doIntimidaciónEspecifica(Iprofugo p);
+
+    protected abstract Boolean doCapturarEspecifico(Iprofugo p);
+
+
     
 }
