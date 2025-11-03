@@ -11,12 +11,12 @@ public class CazadorSigiloso extends Cazador {
     }
 
     @Override
-    protected void doIntimidaciónEspecifica(Iprofugo p) {
+    public void doIntimidaciónEspecifica(Iprofugo p) {
         p.reducirHabilidad();
     }
 
     @Override
-    protected Boolean doCapturarEspecifico(Iprofugo p) {
+    public Boolean doCapturarEspecifico(Iprofugo p) {
        
         return p.getHabilidad() < 50;
     }

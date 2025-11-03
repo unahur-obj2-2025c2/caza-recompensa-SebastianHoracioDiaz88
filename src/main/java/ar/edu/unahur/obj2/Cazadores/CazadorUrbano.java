@@ -10,12 +10,12 @@ public class CazadorUrbano extends Cazador{
     }
   
     @Override
-    protected void doIntimidaciónEspecifica(Iprofugo p) {
+    public void doIntimidaciónEspecifica(Iprofugo p) {
           p.dejarDeEstarNervioso();
     }
 
     @Override
-    protected Boolean doCapturarEspecifico(Iprofugo p) {
+    public Boolean doCapturarEspecifico(Iprofugo p) {
         return ! p.esNervioso();
     }
 
