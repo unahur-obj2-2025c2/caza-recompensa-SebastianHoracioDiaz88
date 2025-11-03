@@ -8,16 +8,14 @@ public class CazadorRural extends Cazador {
         super(experiencia);
     }
 
-     @Override
+    @Override
     public void doIntimidaciónEspecifica(Iprofugo p) {
        p.volverseNervioso();
     }
 
     @Override
     public Boolean doCapturarEspecifico(Iprofugo p) {
-        
        return p.esNervioso();
-        
     }
-   
 }
+

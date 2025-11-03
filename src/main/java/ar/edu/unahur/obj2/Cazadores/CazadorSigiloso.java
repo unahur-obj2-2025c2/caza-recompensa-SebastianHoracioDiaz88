@@ -7,7 +7,6 @@ public class CazadorSigiloso extends Cazador {
 
     public CazadorSigiloso(Integer experiencia) {
         super(experiencia);
-       
     }
 
     @Override
@@ -17,8 +16,6 @@ public class CazadorSigiloso extends Cazador {
 
     @Override
     public Boolean doCapturarEspecifico(Iprofugo p) {
-       
         return p.getHabilidad() < 50;
     }
-
 }

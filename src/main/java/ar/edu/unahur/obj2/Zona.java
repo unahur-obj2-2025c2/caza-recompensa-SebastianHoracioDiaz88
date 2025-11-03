@@ -39,7 +39,4 @@ public class Zona {
     public void vaciarProfugos() {
         profugos.clear();
     }
-
-
-
 }
