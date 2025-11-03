@@ -7,7 +7,7 @@ import ar.edu.unahur.obj2.Zona;
 import ar.edu.unahur.obj2.Profugo.Iprofugo;
 
 public abstract class Cazador {
-   
+
     protected Integer experiencia;
     protected List<Iprofugo> profugosCapturados;
 
@@ -18,15 +18,19 @@ public abstract class Cazador {
 
     public void cazarEn(Zona zona){
         List<Iprofugo> intimidados = new ArrayList<>();
-        zona.getProfugos().forEach(p -> {
-            if(puedeCapturar(p)){
-                profugosCapturados.add(p);   // registrar captura
-                zona.quitarProfugo(p);
+        List<Iprofugo> capturados = new ArrayList<>();
+
+        for(Iprofugo p : zona.getProfugos()) {
+            if(puedeCapturar(p)) {
+                capturados.add(p);
+                profugosCapturados.add(p);
             } else {
                 intimidar(p);
                 intimidados.add(p);
             }
-        });
+        }
+
+        capturados.forEach(zona::quitarProfugo);
 
         sumarExperiencia(intimidados);
     }
@@ -43,13 +47,9 @@ public abstract class Cazador {
         return doCapturarEspecifico(p);
     }
 
-    public void intimidacionEspecifica(Iprofugo p) {
-        doIntimidaciónEspecifica(p);
-    }
-
     public void intimidar(Iprofugo p) {
         p.disminuirInocencia();
-        intimidacionEspecifica(p);
+        doIntimidacionEspecifica(p);
     }
 
     private void sumarExperiencia(List<Iprofugo> intimidados) {
@@ -57,12 +57,9 @@ public abstract class Cazador {
                 .mapToInt(Iprofugo::getHabilidad)
                 .min()
                 .orElse(0);
+
         experiencia += minimaHabilidad + 2 * intimidados.size();
     }
-
-    public abstract void doIntimidaciónEspecifica(Iprofugo p);
-
-    public abstract Boolean doCapturarEspecifico(Iprofugo p);
 
     public Integer getExperiencia() {
         return experiencia;
@@ -71,4 +68,9 @@ public abstract class Cazador {
     public List<Iprofugo> getProfugosCapturados() {
         return profugosCapturados;
     }
+
+    // Métodos abstractos para cada tipo de cazador
+    public abstract Boolean doCapturarEspecifico(Iprofugo p);
+
+    public abstract void doIntimidacionEspecifica(Iprofugo p);
 }
